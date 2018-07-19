@@ -107,7 +107,7 @@ C     real(8) :: rmin,rmax
            imin=nint(rmin*dscale)
            imax=nint(rmax*dscale)
            maxdif=imax-imin
-           temp=i1log2(maxdif+1)
+           temp=i1log2(maxdif+1)   !dusan WHY +1 ?
            nbits=ceiling(temp)
            rmin=real(imin)
            !   scale data

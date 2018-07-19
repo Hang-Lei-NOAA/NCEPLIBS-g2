@@ -35,11 +35,12 @@
 !
 ! PROGRAM HISTORY LOG:
 ! 2000-05-09  Gilbert
-! 2003-09-02  Gilbert   -  Added GDT 3.31 - Albers Equal Area
-! 2007-04-24  Vuong     -  Added GDT 3.204  Curilinear Orthogonal Grids
-! 2008-05-29  Vuong     -  Added GDT 3.32768 Rotate Lat/Lon E-grid
-! 2010-05-10  Vuong     -  Added GDT 3.32769 Rotate Lat/Lon Non E-Stagger grid
+! 2003-09-02  Gilbert   -  Added GDT 3.31 -  Albers Equal Area
+! 2007-04-24  Vuong     -  Added GDT 3.204   Curilinear Orthogonal Grids
+! 2008-05-29  Vuong     -  Added GDT 3.32768 Rotated Lat/Lon E-grid
+! 2010-05-10  Vuong     -  Added GDT 3.32769 Rotated Lat/Lon Non E-Stagger grid
 ! 2013-08-06  Vuong     -  Added GDT 3.4,3.5,3.12,3.101,3.140
+! 2018-05-21  Jovic     -  Added GDT 3.60    Cubic Gnomonic grid
 !
 ! USAGE:    use gridtemplates
 !
@@ -49,7 +50,7 @@
 !
 !$$$
 
-      integer,parameter :: MAXLEN=200,MAXTEMP=31
+      integer,parameter :: MAXLEN=200,MAXTEMP=32
 
       type gridtemplate
           integer :: template_num
@@ -250,6 +251,40 @@
       data (templates(31)%mapgrid(j),j=1,17)
      &              /1,1,4,1,4,1,4,4,4,-4,4,4,4,1,4,4,1/
 
+!
+!     GDT 3.60 Added (05/21/2016)
+!
+      data templates(32)%template_num /60/      !  Cubic Gnomonic grid
+      data templates(32)%mapgridlen /25/
+      data templates(32)%needext /.false./
+      data (templates(32)%mapgrid(j),j=1,25)
+     &              /
+     &                1,   !  1    15                 Shape of the Earth (see Code table 3.2)
+     &                1,   !  2    16                 Scale factor of radius of spherical Earth
+     &                4,   !  3    17 18 19 20        Scaled value of radius of spherical Earth
+     &                1,   !  4    21                 Scale factor of major axis of oblate spheroid Earth
+     &                4,   !  5    22 23 24 25        Scaled value of major axis of oblate spheroid Earth
+     &                1,   !  6    26                 Scale factor of minor axis of oblate spheroid Earth
+     &                4,   !  7    27 28 29 30        Scaled value of minor axis of oblate spheroid Earth
+     &                4,   !  8    31 32 33 34        Ni – number of grid cells along the face of the cube (cube_res, integer, 48,96,192,.....)
+     &               -4,   !  9    35 36 37 38        Latitude of the southern pole of projection (target_lat)
+     &                4,   !  10   39 40 41 42        Longitude of the southern pole of projection (target_lon)
+     &                4,   !  11   43 44 45 46        Angle of rotation of projection
+     &                1,   !  12   47                 Grid type  (see Code table 3.60)
+     &                4,   !  13   48 49 50 51        Stretching factor (stretch_factor >= 1.0)
+     &                4,   !  14   52 53 54 55        Möbius zone angular half-width
+     &                2,   !  15   56 56              Face index permutation (0-719) (see Note 1)
+     &                2,   !  16   58 59              Face coordinates orientations (0-1023) (see Note 2)
+     &                1,   !  17   60                 Tile number (tile, integer, 0 or 1-6) (see Note 3)
+     &                1,   !  18   61                 Parent tile number if this is nested/regional domain, zero otherwise  (parent_tile, integer) (see Note 4)
+     &                1,   !  19   62                 Grid refinement ratio if this is nested/regional domain, zero otherwise (refine_ratio, integer)
+     &                4,   !  20   63 64 65 66        istart_nest (integer)
+     &                4,   !  21   67 68 69 70        jstart_nest (integer)
+     &                4,   !  22   71 72 73 74        iend_nest (integer)
+     &                4,   !  23   75 76 77 78        jend_nest (integer)
+     &                1,   !  24   79                 Resolution and component flags (see Flag table 3.3)
+     &                1    !  25   80                 Scanning mode (see Flag table 3.4)
+     &              /
       contains
 
 
